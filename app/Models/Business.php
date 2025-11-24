@@ -35,6 +35,11 @@ class Business extends Model
         return $this->hasOne(QrCode::class);
     }
 
+    public function stampCodes()
+    {
+        return $this->hasMany(StampCode::class);
+    }
+
     protected static function boot()
     {
         parent::boot();

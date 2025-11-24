@@ -13,7 +13,7 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, IdCard, LayoutGrid, QrCodeIcon, Users2Icon } from 'lucide-react';
+import { BookOpen, Code2Icon, Folder, IdCard, LayoutGrid, QrCodeIcon, Stamp, StampIcon, Users2Icon } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -23,9 +23,14 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
       {
-        title: 'QR Studio',
-        href: '/business/qr-studio',
-        icon: QrCodeIcon,
+        title: 'Issue Stamp',
+        href: '/business/issue-stamp',
+        icon: StampIcon,
+    },
+       {
+        title: 'Stamp Codes',
+        href: '/business/stamp-codes',
+        icon: Code2Icon,
     },
       {
         title: 'Card Templates',
@@ -36,6 +41,11 @@ const mainNavItems: NavItem[] = [
         title: 'Customers',
         href: '/business/customers',
         icon: Users2Icon,
+    },
+          {
+        title: 'QR Studio',
+        href: '/business/qr-studio',
+        icon: QrCodeIcon,
     },
 ];
 

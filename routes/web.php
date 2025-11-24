@@ -4,6 +4,8 @@ use App\Http\Controllers\Business\CardTempalateController;
 use App\Http\Controllers\Business\CustomerController;
 use App\Http\Controllers\Business\DashboardController;
 use App\Http\Controllers\Business\QRStudioController;
+use App\Http\Controllers\Business\IssueStampController;
+use App\Http\Controllers\Business\StampCodeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -21,6 +23,8 @@ Route::prefix('business')->group(function(){
     Route::get('/qr-studio/download', [QRStudioController::class, 'download']);
     Route::post('/qr-studio/update', [QRStudioController::class, 'update']);
     Route::resource('/customers', CustomerController::class);
+    Route::get('/issue-stamp', [IssueStampController::class, 'index']);
+    Route::get('/stamp-codes', [StampCodeController::class, 'index']);
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

@@ -31,6 +31,11 @@ class Customer extends Model implements AuthenticatableContract, AuthorizableCon
         'password' => 'hashed',
     ];
 
+    public function stamp_codes()
+    {
+        return $this->hasMany(StampCode::class);
+    }
+
     public function business()
     {
         return $this->belongsTo(Business::class);
