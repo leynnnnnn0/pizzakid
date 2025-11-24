@@ -13,7 +13,7 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, IdCard, LayoutGrid, QrCodeIcon } from 'lucide-react';
+import { BookOpen, Folder, IdCard, LayoutGrid, QrCodeIcon, Users2Icon } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -31,6 +31,11 @@ const mainNavItems: NavItem[] = [
         title: 'Card Templates',
         href: '/business/card-templates',
         icon: IdCard,
+    },
+      {
+        title: 'Customers',
+        href: '/business/customers',
+        icon: Users2Icon,
     },
 ];
 

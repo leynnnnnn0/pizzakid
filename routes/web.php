@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Business\CardTempalateController;
+use App\Http\Controllers\Business\CustomerController;
 use App\Http\Controllers\Business\DashboardController;
 use App\Http\Controllers\Business\QRStudioController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ Route::prefix('business')->group(function(){
     Route::get('/qr-studio', [QRStudioController::class, 'index']);
     Route::get('/qr-studio/download', [QRStudioController::class, 'download']);
     Route::post('/qr-studio/update', [QRStudioController::class, 'update']);
+    Route::resource('/customers', CustomerController::class);
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
