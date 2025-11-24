@@ -139,10 +139,73 @@ export default function Index({ qrUrl, qrCode, errors }: IndexProps) {
       <Head title="QR Studio" />
       <ModuleHeading title="QR Studio" description="Manage your business QR code settings." />
       
-      <div className="container mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+          {/* Preview Panel - Shows first on mobile */}
+          <div className="order-first lg:order-last">
+            <Card className="lg:sticky lg:top-8">
+              <CardHeader>
+                <CardTitle>Preview</CardTitle>
+                <CardDescription>
+                  This is how your QR code menu will look when printed
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div
+                  className="aspect-[8.5/11] border-2 shadow-lg mx-auto w-full max-w-sm lg:max-w-md relative overflow-hidden"
+                  style={previewStyle}
+                >
+                  {backgroundPreview && (
+                    <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" />
+                  )}
+                  <div className="relative h-full flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 border-4 sm:border-8" style={{ borderColor: data.textColor }}>
+                    {/* Heading */}
+                    <h1 className="text-3xl sm:text-4xl lg:text-6xl font-serif italic mb-4 sm:mb-6 lg:mb-8 text-center" style={{ color: data.textColor }}>
+                      {data.heading}
+                    </h1>
+
+                    {/* Subheading */}
+                    <p className="text-center text-xs sm:text-sm lg:text-lg mb-4 sm:mb-6 lg:mb-8 whitespace-pre-line px-2" style={{ color: data.textColor }}>
+                      {data.subheading}
+                    </p>
+
+                    {/* QR Code Placeholder */}
+                    <div className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 bg-white p-2 mb-4 sm:mb-6 lg:mb-8 shadow-lg">
+                      <div className="w-full h-full bg-gray-300 flex items-center justify-center text-xs text-gray-600">
+                        QR Code Preview
+                      </div>
+                    </div>
+
+                    {/* Logo */}
+                    <div className="p-2 sm:p-3 lg:p-4 w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 flex items-center justify-center" style={{ borderColor: data.textColor }}>
+                      {logoPreview ? (
+                        <img src={logoPreview} alt="Logo" className="max-w-full max-h-full object-contain" />
+                      ) : (
+                        <div className="text-center font-bold text-xs sm:text-sm" style={{ color: data.textColor }}>
+                          <div>YOUR</div>
+                          <div>LOGO</div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Download Button */}
+                <Button 
+                  onClick={handleDownload} 
+                  className="w-full" 
+                  variant="outline"
+                  disabled={isDownloading}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  {isDownloading ? 'Generating PDF...' : 'Download QR Code PDF'}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
           {/* Customization Panel */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Customize Your QR Code</CardTitle>
@@ -327,7 +390,7 @@ export default function Index({ qrUrl, qrCode, errors }: IndexProps) {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex gap-2 pt-4">
+                  <div className="flex flex-col sm:flex-row gap-2 pt-4">
                     <Button type="submit" className="flex-1" disabled={processing}>
                       <Save className="w-4 h-4 mr-2" />
                       {processing ? 'Saving...' : 'Save Settings'}
@@ -337,6 +400,7 @@ export default function Index({ qrUrl, qrCode, errors }: IndexProps) {
                       variant="outline" 
                       onClick={resetToDefault} 
                       disabled={processing}
+                      className="sm:w-auto"
                     >
                       <RefreshCw className="w-4 h-4 mr-2" />
                       Reset
@@ -356,69 +420,6 @@ export default function Index({ qrUrl, qrCode, errors }: IndexProps) {
                 <p>• Print on standard 8.5" x 11" paper or cardstock</p>
                 <p>• Test the QR code after printing to ensure it scans properly</p>
                 <p>• Consider laminating for durability in high-traffic areas</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Preview Panel */}
-          <div>
-            <Card className="sticky top-8">
-              <CardHeader>
-                <CardTitle>Preview</CardTitle>
-                <CardDescription>
-                  This is how your QR code menu will look when printed
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div
-                  className="aspect-[8.5/11] border-2 shadow-lg mx-auto max-w-md relative overflow-hidden"
-                  style={previewStyle}
-                >
-                  {backgroundPreview && (
-                    <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" />
-                  )}
-                  <div className="relative h-full flex flex-col items-center justify-center p-8 border-8" style={{ borderColor: data.textColor }}>
-                    {/* Heading */}
-                    <h1 className="text-6xl font-serif italic mb-8" style={{ color: data.textColor }}>
-                      {data.heading}
-                    </h1>
-
-                    {/* Subheading */}
-                    <p className="text-center text-lg mb-8 whitespace-pre-line" style={{ color: data.textColor }}>
-                      {data.subheading}
-                    </p>
-
-                    {/* QR Code Placeholder */}
-                    <div className="w-48 h-48 bg-white p-2 mb-8 shadow-lg">
-                      <div className="w-full h-full bg-gray-300 flex items-center justify-center text-xs text-gray-600">
-                        QR Code Preview
-                      </div>
-                    </div>
-
-                    {/* Logo */}
-                    <div className="p-4 w-32 h-32 flex items-center justify-center" style={{ borderColor: data.textColor }}>
-                      {logoPreview ? (
-                        <img src={logoPreview} alt="Logo" className="max-w-full max-h-full object-contain" />
-                      ) : (
-                        <div className="text-center font-bold text-sm" style={{ color: data.textColor }}>
-                          <div>YOUR</div>
-                          <div>LOGO</div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Download Button */}
-                <Button 
-                  onClick={handleDownload} 
-                  className="w-full" 
-                  variant="outline"
-                  disabled={isDownloading}
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  {isDownloading ? 'Generating PDF...' : 'Download QR Code PDF'}
-                </Button>
               </CardContent>
             </Card>
           </div>

@@ -41,12 +41,12 @@ export default function Index({code} : Props) {
   return (
     <AppLayout>
       <Head title="Issue Stamp" />
-      <div className="max-w-2xl mx-auto mt-8">
+      <div className="w-full max-w-2xl mx-auto sm:mt-6 md:mt-8 sm:px-6 lg:px-8">
         {!code.success ? (
-          <div className="bg-white rounded-lg shadow p-8 text-center">
-            <div className="mb-6">
+          <div className="bg-white rounded-lg shadow p-6 sm:p-8 text-center">
+            <div className="mb-4 sm:mb-6">
               <svg
-                className="w-20 h-20 mx-auto text-gray-400"
+                className="w-16 h-16 sm:w-20 sm:h-20 mx-auto text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -60,10 +60,10 @@ export default function Index({code} : Props) {
               </svg>
             </div>
 
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
               Ready to Issue a Stamp?
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-2">
               Click the button below to generate a unique code for your
               customer.
             </p>
@@ -77,17 +77,17 @@ export default function Index({code} : Props) {
             <button
               onClick={generateCode}
               disabled={loading}
-              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
+              className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? "Generating..." : "Generate Code"}
             </button>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow p-8">
-            <div className="text-center mb-6">
-              <div className="inline-block p-2 bg-green-100 rounded-full mb-4">
+          <div className="bg-white rounded-lg shadow p-6 sm:p-8">
+            <div className="text-center mb-4 sm:mb-6">
+              <div className="inline-block p-2 bg-green-100 rounded-full mb-3 sm:mb-4">
                 <svg
-                  className="w-8 h-8 text-green-600"
+                  className="w-6 h-6 sm:w-8 sm:h-8 text-green-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -100,39 +100,39 @@ export default function Index({code} : Props) {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-1">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-1">
                 Code Generated Successfully
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-xs sm:text-sm text-gray-500">
                 Generated on {code.created_at}
               </p>
             </div>
 
-            <div className="border-t border-b border-gray-200 py-6 mb-6">
-              <div className="flex justify-center mb-6">
+            <div className="border-t border-b border-gray-200 py-4 sm:py-6 mb-4 sm:mb-6">
+              <div className="flex justify-center mb-4 sm:mb-6">
                 <img
                   src={code.qr_url}
                   alt="QR Code"
-                  className="w-64 h-64 border-2 border-gray-200 rounded-lg"
+                  className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 border-2 border-gray-200 rounded-lg"
                 />
               </div>
 
-              <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">
+              <div className="text-center px-2">
+                <p className="text-xs sm:text-sm text-gray-600 mb-2">
                   Or enter code manually:
                 </p>
-                <div className="inline-block bg-gray-100 px-6 py-3 rounded-lg">
-                  <p className="text-3xl font-mono font-bold text-gray-900 tracking-wider">
+                <div className="inline-block bg-gray-100 px-4 sm:px-6 py-2 sm:py-3 rounded-lg">
+                  <p className="text-xl sm:text-2xl md:text-3xl font-mono font-bold text-gray-900 tracking-wider break-all">
                     {code.code}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
               <div className="flex items-start">
                 <svg
-                  className="w-5 h-5 text-yellow-600 mt-0.5 mr-3 flex-shrink-0"
+                  className="w-5 h-5 text-yellow-600 mt-0.5 mr-2 sm:mr-3 flex-shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -145,10 +145,10 @@ export default function Index({code} : Props) {
                   />
                 </svg>
                 <div>
-                  <p className="text-sm font-medium text-yellow-800">
+                  <p className="text-xs sm:text-sm font-medium text-yellow-800">
                     Important
                   </p>
-                  <p className="text-sm text-yellow-700 mt-1">
+                  <p className="text-xs sm:text-sm text-yellow-700 mt-1">
                     This code will expire in 15 minutes if not used. Customer
                     must scan or enter the code in their app.
                   </p>
@@ -159,7 +159,7 @@ export default function Index({code} : Props) {
             <div className="flex gap-3">
               <button
                 onClick={generateNewCode}
-                className="flex-1 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-blue-600 text-white text-sm sm:text-base font-medium rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Generate New Code
               </button>
@@ -167,7 +167,7 @@ export default function Index({code} : Props) {
           </div>
         )}
 
-        <div className="mt-6 text-center text-sm text-gray-500">
+        <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-gray-500 px-2">
           <p>
             Customer should open their app and scan the QR code or enter the
             code manually.

@@ -10,16 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import Pagination from "@/components/pagination";
 
 export interface PaginationLink {
   url: string | null;
@@ -92,8 +86,8 @@ export default function Index({ customers, filters }: Props) {
         description="Manage your business customers."
       />
 
-      <div className="mt-6">
-        <div className="mb-4 relative">
+      <div className="mt-6 sm:px-6 lg:px-8">
+        <div className="mb-4 relative max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
             type="text"
@@ -104,7 +98,8 @@ export default function Index({ customers, filters }: Props) {
           />
         </div>
 
-        <div className="border rounded-lg">
+        {/* Desktop Table View */}
+        <div className="hidden md:block border rounded-lg overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow>
@@ -135,62 +130,39 @@ export default function Index({ customers, filters }: Props) {
           </Table>
         </div>
 
-        {customers.last_page > 1 && (
-          <div className="mt-4 flex items-center justify-between">
-            <div className="text-sm text-gray-500">
-              Showing {customers.from} to {customers.to} of {customers.total}{" "}
-              results
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-4">
+          {customers.data.length > 0 ? (
+            customers.data.map((customer) => (
+              <div
+                key={customer.id}
+                className="border rounded-lg p-4 bg-white shadow-sm space-y-3"
+              >
+                <div>
+                  <div className="text-xs text-gray-500 mb-1">Name</div>
+                  <div className="font-medium text-sm">{customer.users}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 mb-1">Email</div>
+                  <div className="text-sm break-all">{customer.email}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 mb-1">Created At</div>
+                  <div className="text-sm">{formatDate(customer.created_at)}</div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="border rounded-lg p-8 text-center text-gray-500">
+              No customers found.
             </div>
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={() =>
-                      handlePageChange(
-                        customers.current_page > 1
-                          ? customers.links[0].url
-                          : null
-                      )
-                    }
-                    className={
-                      customers.current_page === 1
-                        ? "pointer-events-none opacity-50"
-                        : "cursor-pointer"
-                    }
-                  />
-                </PaginationItem>
+          )}
+        </div>
 
-                {customers.links.slice(1, -1).map((link, index) => (
-                  <PaginationItem key={index}>
-                    <PaginationLink
-                      onClick={() => handlePageChange(link.url)}
-                      isActive={link.active}
-                      className="cursor-pointer"
-                    >
-                      {link.label}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
+        {customers.last_page > 1 && (
+ 
+              <Pagination data={customers} />
 
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={() =>
-                      handlePageChange(
-                        customers.current_page < customers.last_page
-                          ? customers.links[customers.links.length - 1].url
-                          : null
-                      )
-                    }
-                    className={
-                      customers.current_page === customers.last_page
-                        ? "pointer-events-none opacity-50"
-                        : "cursor-pointer"
-                    }
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
         )}
       </div>
     </AppLayout>

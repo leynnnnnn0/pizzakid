@@ -105,7 +105,7 @@ export default function Index({ stampCodes, filters }: Props) {
         description="Manage your issued stamp codes."
       />
 
-      <div className="mt-6">
+      <div className="mt-4 sm:mt-6  sm:px-0">
         <div className="mb-4 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
@@ -117,7 +117,59 @@ export default function Index({ stampCodes, filters }: Props) {
           />
         </div>
 
-        <div className="border rounded-lg">
+        {/* Mobile Card View */}
+        <div className="block lg:hidden space-y-4">
+          {stampCodes.data.length > 0 ? (
+            stampCodes.data.map((stampCode) => (
+              <div
+                key={stampCode.id}
+                className="bg-white border rounded-lg p-4 shadow-sm"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="font-mono font-medium text-sm break-all pr-2">
+                    {stampCode.code}
+                  </div>
+                  {getStatusBadge(stampCode)}
+                </div>
+
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <span className="text-gray-500 font-medium">Customer:</span>
+                    {stampCode.customer ? (
+                      <div className="mt-1">
+                        <div className="font-medium">
+                          {stampCode.customer.username}
+                        </div>
+                        <div className="text-gray-500 text-xs">
+                          {stampCode.customer.email}
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-gray-400 ml-2">Unassigned</span>
+                    )}
+                  </div>
+
+                  <div>
+                    <span className="text-gray-500 font-medium">Used At: </span>
+                    <span className="text-gray-700">{formatDate(stampCode.used_at)}</span>
+                  </div>
+
+                  <div>
+                    <span className="text-gray-500 font-medium">Created: </span>
+                    <span className="text-gray-700">{formatDate(stampCode.created_at)}</span>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="bg-white border rounded-lg p-8 text-center text-gray-500">
+              No stamp codes found.
+            </div>
+          )}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden lg:block border rounded-lg overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -166,13 +218,7 @@ export default function Index({ stampCodes, filters }: Props) {
         </div>
 
         {stampCodes.last_page > 1 && (
-          <div className="mt-4 flex items-center justify-between">
-            <div className="text-sm text-gray-500">
-              Showing {stampCodes.from} to {stampCodes.to} of {stampCodes.total}{" "}
-              results
-            </div>
             <Pagination data={stampCodes}/>
-          </div>
         )}
       </div>
     </AppLayout>
