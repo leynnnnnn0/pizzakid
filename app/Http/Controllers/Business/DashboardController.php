@@ -10,6 +10,7 @@ use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
+    //test
     public function index()
     {
         $business = Auth::user()->business;
