@@ -37,7 +37,7 @@ jobs:
           port: 21
           local-dir: ./
           server-dir: /public_html/
-          timeout: 120000
+          timeout: 6000
           exclude: |
             **/.git*
             **/.git*/**
