@@ -163,96 +163,87 @@ const controlsRef = useRef<any>(null);
     setData('loyalty_card_id', currentCard?.id);
   };
 
-  const handleScanQR = async () => {
-    setMethodDialogOpen(false);
-    setScanDialogOpen(true);
-    setScanning(true);
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'environment' } 
-      });
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-
-      const codeReader = new BrowserQRCodeReader();
-
-const videoInputDevices = await BrowserQRCodeReader.listVideoInputDevices();
-
-// choose your media device (webcam, frontal camera, back camera, etc.)
-const selectedDeviceId = videoInputDevices[0].deviceId;
-
-console.log(`Started decode from camera with id ${selectedDeviceId}`);
-
-
-// you can use the controls to stop() the scan or switchTorch() if available
-const controls = await codeReader.decodeFromVideoDevice(selectedDeviceId, undefined, (result, error, controls) => {
-  controlsRef.current = controls;
-  if (result) {
-            const scannedCode = result.text;
-            data.loyalty_card_id = scannedCode;
-            console.log(data);
-            console.log(scannedCode);
-
-            router.post('/stamps/record', {
-              loyalty_card_id: currentCard?.id,
-              code: scannedCode
-            },
-            {
-                onSuccess: (page) => {
-                const index = cardTemplates.findIndex(card => card.id === page.props.flash.active_card_id);
-                if (index !== -1) {
-                  setCurrentCardIndex(index);
-                }
-                
-                if (page.props.flash.card_completed) {
-                  toast.success(`🎉 ${page.props.flash.message}`, {
-                    description: `You completed cycle #${page.props.flash.cycle_number}!`
-                  });
-                } else {
-                  toast.success("Stamped Successfully.");
-                }
-
-                 setScanDialogOpen(false);
-      setScanning(false);
-         controls.stop();
-                
-                reset();
-              },
-              onError: (errors) => {
-                if (errors.code) {
-                  toast.error(errors.code);
-                } else {
-                  toast.error('Failed to record stamp. Please try again.');
-                }
-                        setScanDialogOpen(false);
-      setScanning(false);
-           controls.stop();
-              },
-              onFinish: () => {
-                controls.stop();
-                stopCamera();
-              }
-            }
-          )
-
-         
-           
-  }else {
-    console.log(result)
-  }
-});
-
-
-    } catch (err) {
-      console.log(err);
-      toast.error('Camera access denied. Please enable camera permissions.');
-      setScanDialogOpen(false);
-      setScanning(false);
+const handleScanQR = async () => {
+  setMethodDialogOpen(false);
+  setScanDialogOpen(true);
+  setScanning(true);
+  
+  try {
+    const codeReader = new BrowserQRCodeReader();
+    const videoInputDevices = await BrowserQRCodeReader.listVideoInputDevices();
+    
+    // Find back camera (environment) or use first available
+    const backCamera = videoInputDevices.find(device => 
+      device.label.toLowerCase().includes('back') || 
+      device.label.toLowerCase().includes('environment')
+    );
+    const selectedDeviceId = backCamera?.deviceId || videoInputDevices[0]?.deviceId;
+    
+    if (!selectedDeviceId) {
+      throw new Error('No camera device found');
     }
-  };
+    
+    console.log(`Started decode from camera with id ${selectedDeviceId}`);
+    
+    // Pass videoRef.current as the video element parameter
+    const controls = await codeReader.decodeFromVideoDevice(
+      selectedDeviceId, 
+      videoRef.current, // Let BrowserQRCodeReader handle the video element
+      (result, error, controls) => {
+        controlsRef.current = controls;
+        
+        if (result) {
+          const scannedCode = result.text;
+          data.loyalty_card_id = scannedCode;
+          console.log(data);
+          console.log(scannedCode);
+          
+          router.post('/stamps/record', {
+            loyalty_card_id: currentCard?.id,
+            code: scannedCode
+          }, {
+            onSuccess: (page) => {
+              const index = cardTemplates.findIndex(card => card.id === page.props.flash.active_card_id);
+              if (index !== -1) {
+                setCurrentCardIndex(index);
+              }
+              if (page.props.flash.card_completed) {
+                toast.success(`🎉 ${page.props.flash.message}`, {
+                  description: `You completed cycle #${page.props.flash.cycle_number}!`
+                });
+              } else {
+                toast.success("Stamped Successfully.");
+              }
+              setScanDialogOpen(false);
+              setScanning(false);
+              controls.stop();
+              reset();
+            },
+            onError: (errors) => {
+              if (errors.code) {
+                toast.error(errors.code);
+              } else {
+                toast.error('Failed to record stamp. Please try again.');
+              }
+              setScanDialogOpen(false);
+              setScanning(false);
+              controls.stop();
+            },
+            onFinish: () => {
+              controls.stop();
+              stopCamera();
+            }
+          });
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    toast.error('Camera access denied. Please enable camera permissions.');
+    setScanDialogOpen(false);
+    setScanning(false);
+  }
+};
 
   const stopCamera = () => {
       if (controlsRef.current) {

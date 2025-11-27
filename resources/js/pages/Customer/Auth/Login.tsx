@@ -45,7 +45,9 @@ export default function Login({ business, status }: LoginProps) {
                                     className="h-16 w-auto"
                                 />
                             ) : (
-                                <img src={LOGO} alt="business logo" className='w-32 h-12'/>
+                               <a href="/">
+                                 <img src={LOGO} alt="business logo" className='w-32 h-12'/>
+                               </a>
                             )}
                         </div>
                         <CardTitle className="text-2xl font-bold text-center">
