@@ -1,7 +1,7 @@
 
 
 import { useState, useEffect } from 'react';
-import { Phone, Mail, Menu, Award, Gift, Tag, ChevronDown, QrCode, BarChart3, Palette, Wifi, WifiOff, Headphones, LogIn } from 'lucide-react';
+import { Phone, Mail, Menu, Award, Gift, Tag, ChevronDown, QrCode, BarChart3, Palette, Wifi, WifiOff, Headphones, LogIn, Play } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
@@ -24,6 +24,7 @@ export default function Welcome() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('');
     const [loginDialogOpen, setLoginDialogOpen] = useState(false);
+    const [isDemo, setIsDemo] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -70,14 +71,32 @@ export default function Welcome() {
     };
 
     const handleLoginChoice = (type : string) => {
-        console.log(`${type} login selected`);
+        let route = "/login";
         setLoginDialogOpen(false);
         if(type == "customer") {
-            router.visit('/customer/login');
-            return;
+            route = '/customer/login';
         }
-        router.visit('/login');
+        if(isDemo){
+            router.get(route, {
+            data: {
+                is_demo: true
+            }
+        });
+        }else{
+            router.get(route);
+        }
     };
+
+    useEffect(() => {
+        if(!loginDialogOpen){
+            setIsDemo(false);
+        }
+    },[loginDialogOpen])
+
+    const handleDemoClick = () => {
+        setIsDemo(true);
+        setLoginDialogOpen(true);
+    }
 
     return (
         <div className="min-h-screen relative overflow-hidden bg-primary">
@@ -236,11 +255,14 @@ export default function Welcome() {
                         </p>
 
                         <button 
-                            onClick={() => setLoginDialogOpen(true)}
+                            onClick={() => handleDemoClick()}
                             className="text-primary cursor-pointer font-semibold px-8 sm:px-10 lg:px-12 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg bg-white "
                            
                         >
-                            Start Stamping 
+                            <div className="flex items-center justify-between gap-3">
+                                Try Demo
+                                <Play/>
+                            </div>
                         </button>
                     </div>
                 </div>

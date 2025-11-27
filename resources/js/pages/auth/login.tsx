@@ -15,13 +15,19 @@ interface LoginProps {
     status?: string;
     canResetPassword: boolean;
     canRegister: boolean;
+    isDemo: boolean
 }
 
 export default function Login({
     status,
     canResetPassword,
     canRegister,
+    isDemo,
 }: LoginProps) {
+
+    console.log(isDemo);
+
+
     return (
         <AuthLayout
             title="Log in to your account"
@@ -45,6 +51,7 @@ export default function Login({
                                     name="email"
                                     required
                                     autoFocus
+                                     defaultValue={isDemo ? 'business@gmail.com' : ''}
                                     tabIndex={1}
                                     autoComplete="email"
                                     placeholder="email@example.com"
@@ -69,7 +76,8 @@ export default function Login({
                                     id="password"
                                     type="password"
                                     name="password"
-                                    required
+                                    required      
+                                    defaultValue={isDemo ? 'password' : ""}
                                     tabIndex={2}
                                     autoComplete="current-password"
                                     placeholder="Password"

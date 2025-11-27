@@ -19,6 +19,8 @@ class CustomerAuthController extends Controller
      */
     public function index(Request $request)
     {
+        $isDemo = $request->query('data') ? $request->query('data')['is_demo'] : false;
+
         // Optional: Get business from query parameter or subdomain
         $businessId = $request->query('token');
         $business = $businessId ? Business::where('qr_token', $businessId)->firstOrFail() : null;
@@ -26,6 +28,7 @@ class CustomerAuthController extends Controller
         return Inertia::render('Customer/Auth/Login', [
             'business' => $business,
             'status' => session('status'),
+            'isDemo' => $isDemo
         ]);
     }
 
@@ -34,6 +37,7 @@ class CustomerAuthController extends Controller
      */
     public function login(Request $request)
     {
+     
         $this->checkTooManyFailedAttempts($request);
 
         $credentials = $request->validate([

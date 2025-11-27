@@ -168,27 +168,41 @@ const handleScanQR = async () => {
   setScanDialogOpen(true);
   setScanning(true);
   
+  // Wait a bit for dialog to open and video element to be ready
+  await new Promise(resolve => setTimeout(resolve, 100));
+  
   try {
     const codeReader = new BrowserQRCodeReader();
-    const videoInputDevices = await BrowserQRCodeReader.listVideoInputDevices();
     
-    // Find back camera (environment) or use first available
-    const backCamera = videoInputDevices.find(device => 
-      device.label.toLowerCase().includes('back') || 
-      device.label.toLowerCase().includes('environment')
-    );
-    const selectedDeviceId = backCamera?.deviceId || videoInputDevices[0]?.deviceId;
-    
-    if (!selectedDeviceId) {
-      throw new Error('No camera device found');
+    // Check if video element is ready
+    if (!videoRef.current) {
+      throw new Error('Video element not ready');
     }
     
-    console.log(`Started decode from camera with id ${selectedDeviceId}`);
+    const videoInputDevices = await BrowserQRCodeReader.listVideoInputDevices();
     
-    // Pass videoRef.current as the video element parameter
+    if (videoInputDevices.length === 0) {
+      throw new Error('No camera devices found');
+    }
+    
+    // Find back camera (environment) or use last device (usually back camera on mobile)
+    let selectedDeviceId;
+    
+    // On mobile, the back camera is often the last device
+    const backCamera = videoInputDevices.find(device => 
+      device.label.toLowerCase().includes('back') || 
+      device.label.toLowerCase().includes('rear') ||
+      device.label.toLowerCase().includes('environment')
+    );
+    
+    selectedDeviceId = backCamera?.deviceId || videoInputDevices[videoInputDevices.length - 1]?.deviceId;
+    
+    console.log(`Available cameras: ${videoInputDevices.length}`);
+    console.log(`Selected device: ${selectedDeviceId}`);
+    
     const controls = await codeReader.decodeFromVideoDevice(
       selectedDeviceId, 
-      videoRef.current, // Let BrowserQRCodeReader handle the video element
+      videoRef.current,
       (result, error, controls) => {
         controlsRef.current = controls;
         
@@ -214,9 +228,13 @@ const handleScanQR = async () => {
               } else {
                 toast.success("Stamped Successfully.");
               }
+              
+              // Clean up
+              if (controlsRef.current) {
+                controlsRef.current.stop();
+              }
               setScanDialogOpen(false);
               setScanning(false);
-              controls.stop();
               reset();
             },
             onError: (errors) => {
@@ -225,22 +243,41 @@ const handleScanQR = async () => {
               } else {
                 toast.error('Failed to record stamp. Please try again.');
               }
+              
+              // Clean up
+              if (controlsRef.current) {
+                controlsRef.current.stop();
+              }
               setScanDialogOpen(false);
               setScanning(false);
-              controls.stop();
             },
             onFinish: () => {
-              controls.stop();
+              if (controlsRef.current) {
+                controlsRef.current.stop();
+              }
               stopCamera();
             }
           });
         }
       }
     );
+    
+    controlsRef.current = controls;
+    
   } catch (err) {
-    window.alert(err);
-    console.log(err);
-    toast.error('Camera access denied. Please enable camera permissions.');
+    console.error('Camera error:', err);
+    
+    // More specific error messages
+    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+      toast.error('Camera permission denied. Please allow camera access in your browser settings.');
+    } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+      toast.error('No camera found on this device.');
+    } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+      toast.error('Camera is already in use by another application.');
+    } else {
+      toast.error('Failed to access camera. Please try again.');
+    }
+    
     setScanDialogOpen(false);
     setScanning(false);
   }

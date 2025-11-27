@@ -14,12 +14,13 @@ interface LoginProps {
         logo?: string;
     };
     status?: string;
+    isDemo: boolean
 }
 
-export default function Login({ business, status }: LoginProps) {
+export default function Login({ business, status, isDemo }: LoginProps) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
+        email: isDemo ? 'customer@gmail.com' : '',
+        password: isDemo ? 'password' : '',
         remember: false,
     });
 
