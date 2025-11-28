@@ -10,6 +10,8 @@ use App\Http\Controllers\Business\StampCodeController;
 use App\Http\Controllers\Business\TicketController;
 use App\Http\Controllers\Customer\CustomerAuthController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -21,29 +23,27 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::prefix('business')->group(function(){
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('/card-templates', CardTempalateController::class);
-    Route::get('/qr-studio', [QRStudioController::class, 'index']);
-    Route::get('/qr-studio/download', [QRStudioController::class, 'download']);
-    Route::post('/qr-studio/update', [QRStudioController::class, 'update']);
-    Route::resource('/customers', CustomerController::class);
-    Route::get('/issue-stamp', [IssueStampController::class, 'index']);
-    Route::get('/stamp-codes', [StampCodeController::class, 'index']);
+    Route::prefix('business')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('/card-templates', CardTempalateController::class);
+        Route::get('/qr-studio', [QRStudioController::class, 'index']);
+        Route::get('/qr-studio/download', [QRStudioController::class, 'download']);
+        Route::post('/qr-studio/update', [QRStudioController::class, 'update']);
+        Route::resource('/customers', CustomerController::class);
+        Route::get('/issue-stamp', [IssueStampController::class, 'index']);
+        Route::get('/stamp-codes', [StampCodeController::class, 'index']);
 
 
-    
-    Route::get('/perk-claims', [PerkClaimController::class, 'index'])->name('perk-claims.index');
-    Route::post('/perk-claims/{perkClaim}/redeem', [PerkClaimController::class, 'markAsRedeemed'])->name('perk-claims.redeem');
-    Route::post('/perk-claims/{perkClaim}/undo', [PerkClaimController::class, 'undoRedeem'])->name('perk-claims.undo');
 
-    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
-    Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
-    Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
-    Route::post('/tickets/{id}/reply', [TicketController::class, 'reply'])->name('tickets.reply');
+        Route::get('/perk-claims', [PerkClaimController::class, 'index'])->name('perk-claims.index');
+        Route::post('/perk-claims/{perkClaim}/redeem', [PerkClaimController::class, 'markAsRedeemed'])->name('perk-claims.redeem');
+        Route::post('/perk-claims/{perkClaim}/undo', [PerkClaimController::class, 'undoRedeem'])->name('perk-claims.undo');
 
-});
-
+        Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
+        Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+        Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
+        Route::post('/tickets/{id}/reply', [TicketController::class, 'reply'])->name('tickets.reply');
+    });
 });
 
 Route::post('/stamps/record', [StampCodeController::class, 'record'])
@@ -51,33 +51,50 @@ Route::post('/stamps/record', [StampCodeController::class, 'record'])
 
 // Customer Authentication Routes
 Route::prefix('customer')->name('customer.')->group(function () {
-    
+
     // Guest routes (not authenticated)
     Route::middleware('guest:customer')->group(function () {
         // Login
         Route::get('/login', [CustomerAuthController::class, 'index'])
             ->name('login');
-        
+
         Route::post('/login', [CustomerAuthController::class, 'login']);
-        
+
         // Register
         Route::get('/register', [CustomerAuthController::class, 'showRegister'])
             ->name('register');
-        
+
         Route::post('/register', [CustomerAuthController::class, 'register']);
     });
-    
+
+    // Email Verification Notice
+    Route::get('/customer/verify-email', function () {
+        return Inertia::render('Customer/Auth/VerifyEmail');
+    })->middleware(['auth:customer'])->name('customer.verification.notice');
+
+    // Email Verification Handler
+    Route::get('/customer/verify-email/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect()->route('customer.dashboard');
+    })->middleware(['auth:customer', 'signed'])->name('customer.verification.verify');
+
+    // Resend Verification Email
+    Route::post('/customer/email/verification-notification', function (Request $request) {
+        $request->user('customer')->sendEmailVerificationNotification();
+        return back()->with('status', 'verification-link-sent');
+    })->middleware(['auth:customer', 'throttle:6,1'])->name('customer.verification.send');
+
     // Authenticated customer routes
-    Route::middleware('auth:customer')->group(function () {
+    Route::middleware(['auth:customer'])->group(function () {
         // Logout
         Route::post('/logout', [CustomerAuthController::class, 'logout'])
             ->name('logout');
-        
+
         // Dashboard
         Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('dashboard');
-        
+
         // Add more customer routes here...
     });
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
