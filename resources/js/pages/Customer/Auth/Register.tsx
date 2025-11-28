@@ -6,9 +6,11 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Store, Mail, Lock, User, AlertCircle, Building2 } from 'lucide-react';
+import { Store, Mail, Lock, User, AlertCircle, Building2, MessageCircleWarningIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import LOGO from '../../../../images/mainLogo.png';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Info } from 'lucide-react';
 
 interface Business {
     id: number;
@@ -106,24 +108,26 @@ export default function Register({ businesses, selectedBusiness }: RegisterProps
                                 )}
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="email" className="flex items-center gap-2">
-                                    <Mail className="h-4 w-4" />
-                                    Email Address
-                                </Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    value={data.email}
-                                    onChange={(e) => setData('email', e.target.value)}
-                                    placeholder="customer@example.com"
-                                    required
-                                    className="h-11"
-                                />
-                                {errors.email && (
-                                    <p className="text-sm text-destructive">{errors.email}</p>
-                                )}
-                            </div>
+                           <div className="space-y-2">
+    <Label htmlFor="email" className="flex items-center gap-2">
+        <Mail className="h-4 w-4" />
+        Email Address
+    </Label>
+    <Input
+        id="email"
+        type="email"
+        value={data.email}
+        onChange={(e) => setData('email', e.target.value)}
+        placeholder="customer@example.com"
+        className="h-11"
+    />
+    <p className="text-xs text-orange-400 flex items-center gap-1">
+       <MessageCircleWarningIcon className='size-4'/> Used for password recovery
+    </p>
+    {errors.email && (
+        <p className="text-sm text-destructive">{errors.email}</p>
+    )}
+</div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="password" className="flex items-center gap-2">
