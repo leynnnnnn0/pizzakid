@@ -79,7 +79,6 @@ export default function Create() {
             return;
           }
         toast.error("Please fill up all the required fields");
-        console.log(e);
       }
     });
   };

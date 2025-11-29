@@ -60,7 +60,6 @@ export default function Index({ code, cards, loyalty_card_id }: Props) {
       loyalty_card_id: selectedCardId 
     });
     
-    console.log('Code generation requested for card:', selectedCardId);
     setLoading(false);
   };
 
@@ -76,8 +75,7 @@ export default function Index({ code, cards, loyalty_card_id }: Props) {
     router.get('/business/issue-stamp', { 
       loyalty_card_id: selectedCardId 
     });
-    
-    console.log('New code generation requested for card:', selectedCardId);
+
     setLoading(false);
   };
 

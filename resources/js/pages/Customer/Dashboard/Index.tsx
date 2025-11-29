@@ -252,8 +252,6 @@ const handleScanQR = async () => {
     
     selectedDeviceId = backCamera?.deviceId || videoInputDevices[videoInputDevices.length - 1]?.deviceId;
     
-    console.log(`Available cameras: ${videoInputDevices.length}`);
-    console.log(`Selected device: ${selectedDeviceId}`);
     
     const controls = await codeReader.decodeFromVideoDevice(
       selectedDeviceId, 
@@ -264,8 +262,7 @@ const handleScanQR = async () => {
         if (result) {
           const scannedCode = result.text;
           data.loyalty_card_id = scannedCode;
-          console.log(data);
-          console.log(scannedCode);
+
           
           router.post('/stamps/record', {
             loyalty_card_id: currentCard?.id,
@@ -378,7 +375,6 @@ useEffect(() => {
         if (index !== -1) {
           setCurrentCardIndex(index);
         }
-        console.log(page);
         
         // Show success message based on completion status
         if (page.props.flash.card_completed) {

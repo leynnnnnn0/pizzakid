@@ -91,7 +91,6 @@ export default function Index({ qrUrl, qrCode, errors }: IndexProps) {
       },
       onError: (errors) => {
        toast.error("An error occured while trying to generate.")
-       console.log(errors);
       }
     });
   };

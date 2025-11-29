@@ -47,7 +47,7 @@ export default function Index({ cardTemplates = [] }) {
           if(e.error){
             toast.error(e.error);
           }else {
-            console.log("An error occured while trying to delete the card template");
+            toast.error("An error occured.")
           }
         }
       });
