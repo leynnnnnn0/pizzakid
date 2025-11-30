@@ -213,9 +213,9 @@ class CardTempalateController extends Controller
 
     public function store(Request $request)
     {
-        if (Auth::user()->email === 'business@gmail.com') {
-            return redirect()->back()->withErrors(['error' => 'Demo account cannot make changes.']);
-        }
+        // if (Auth::user()->email === 'business@gmail.com') {
+        //     return redirect()->back()->withErrors(['error' => 'Demo account cannot make changes.']);
+        // }
         $validated = $request->validate([
             'logo' => 'nullable|string',
             'name' => 'required|string|max:255|unique:loyalty_cards,name,NULL,id,business_id,' . Auth::user()->business->id,
