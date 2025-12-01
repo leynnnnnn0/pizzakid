@@ -14,7 +14,8 @@ class StampCode extends Model
         'customer_id',
         'code',
         'used_at',
-        'is_expired'
+        'is_expired',
+        'is_offline_code',
     ];
 
     public function business()

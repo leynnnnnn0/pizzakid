@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->timestamp('used_at')->nullable();
             $table->boolean('is_expired')->default(false);
-                $table->softDeletes();
+            $table->boolean('is_offline_code')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

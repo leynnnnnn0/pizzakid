@@ -85,7 +85,7 @@ export default function Index({ code, cards, loyalty_card_id }: Props) {
     setError(null);
 
     try {
-      const response = await fetch('/business/issue-stamps/generate-offline', {
+      const response = await fetch(`/business/issue-stamps/generate-offline?id=${selectedCardId}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/pdf',

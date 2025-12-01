@@ -544,7 +544,7 @@ export default function Welcome() {
                                     className="w-full sm:w-auto font-semibold px-8 sm:px-12 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg cursor-pointer"
                                     style={{ backgroundColor: '#F4B942', color: '#ffffff' }}
                                 >
-                                    See full documentation
+                                    Full guide
                                 </a>
                             </div>
                         </div>

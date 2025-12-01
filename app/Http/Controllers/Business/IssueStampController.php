@@ -60,6 +60,7 @@ class IssueStampController extends Controller
         // Expire old unused codes
         StampCode::whereNull('used_at')
             ->where('created_at', '<=', Carbon::now()->subMinutes(15))
+            ->where('is_offline_code', false)
             ->update([
                 'is_expired' => true
             ]);
@@ -88,16 +89,31 @@ class IssueStampController extends Controller
     }
 
 
-    public function generateOfflineStamps()
+   public function generateOfflineStamps(Request $request)
     {
+        $loyaltyCardId = $request->input('id');
         $registrationLink = "https://stampbayan.com/customer/register?business=" . Auth::user()->business->qr_token;
+        $businessId = Auth::user()->business->id;
 
-        // Generate 25 unique codes
+        // Generate 8 unique codes and save to database
         $tickets = [];
+        $stampCodesToInsert = [];
+        
         for ($i = 0; $i < 8; $i++) {
             do {
                 $code = strtoupper(Str::random(8));
-            } while (StampCode::where('code', $code)->exists() || in_array($code, array_column($tickets, 'code')));
+            } while (
+                StampCode::where('code', $code)->exists() || 
+                in_array($code, array_column($tickets, 'code'))
+            );
+
+            // Prepare data for database insertion
+            $stampCodesToInsert[] = [
+                'business_id' => $businessId,
+                'loyalty_card_id' => $loyaltyCardId, 
+                'code' => $code,
+                'is_offline_code' => true
+            ];
 
             // Generate QR code and convert to base64
             $qrImageUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($registrationLink);
@@ -109,6 +125,9 @@ class IssueStampController extends Controller
                 'qr_code_base64' => $qrCodeBase64
             ];
         }
+
+        // Bulk insert all stamp codes into database
+        StampCode::insert($stampCodesToInsert);
 
         $businessName = Auth::user()->business->name;
 
