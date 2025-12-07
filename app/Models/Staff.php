@@ -4,11 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Auth\Authenticatable;
 
-class Staff extends Model
+class Staff extends Model implements AuthenticatableContract, AuthorizableContract
 {
     /** @use HasFactory<\Database\Factories\StaffFactory> */
-    use HasFactory;
+    use HasFactory, Authenticatable, Authorizable, Notifiable;
 
     protected $fillable = [ 
         'business_id',
@@ -17,6 +23,11 @@ class Staff extends Model
         'password',
         'remarks',
         'is_active'
+    ];
+
+     protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     protected $table = 'staff';

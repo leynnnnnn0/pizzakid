@@ -144,6 +144,7 @@ class DatabaseSeeder extends Seeder
                 $code = $this->generateUniqueCode();
                 
                 $stampCode = StampCode::create([
+                    'user_id' => 1,
                     'business_id' => $business->id,
                     'customer_id' => $customer->id,
                     'loyalty_card_id' => $selectedCard->id,
@@ -222,6 +223,7 @@ class DatabaseSeeder extends Seeder
             $selectedCard = rand(0, 1) === 0 ? $loyaltyCard1 : $loyaltyCard2;
             
             StampCode::create([
+                'user_id' => 1,
                 'business_id' => $business->id,
                 'customer_id' => null,
                 'loyalty_card_id' => $selectedCard->id,

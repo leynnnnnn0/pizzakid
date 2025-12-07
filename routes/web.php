@@ -12,6 +12,8 @@ use App\Http\Controllers\Business\TicketController;
 use App\Http\Controllers\Customer\CustomerAuthController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\DocumentationController;
+use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
+use App\Http\Controllers\Staff\StaffAuthController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -118,5 +120,21 @@ Route::prefix('customer')->name('customer.')->group(function () {
         // Add more customer routes here...
     });
 });
+
+Route::name('staff.')->prefix('staff')->group(function () {
+    Route::middleware('auth:staff')->group(function () {
+        Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
+    });
+
+    Route::middleware('guest:staff')->group(function () {
+        Route::get('/login', [StaffAuthController::class, 'index'])
+            ->name('login');
+
+        Route::post('/login', [StaffAuthController::class, 'login']);
+    });
+});
+
+
+
 
 require __DIR__ . '/settings.php';

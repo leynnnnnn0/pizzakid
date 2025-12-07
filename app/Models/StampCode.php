@@ -9,6 +9,7 @@ class StampCode extends Model
 {
     use SoftDeletes;
     protected $fillable = [
+        'user_id',
         'loyalty_card_id',
         'business_id',
         'customer_id',

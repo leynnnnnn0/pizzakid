@@ -72,6 +72,7 @@ class IssueStampController extends Controller
 
         // Create stamp code
         $stampCode = StampCode::create([
+            'user_id' => Auth::id(),
             'business_id' => Auth::user()->business->id,
             'customer_id' => null,
             'loyalty_card_id' => $loyaltyCardId,
@@ -110,6 +111,7 @@ class IssueStampController extends Controller
 
             // Prepare data for database insertion
             $stampCodesToInsert[] = [
+                'user_id' => Auth::id(),
                 'business_id' => $businessId,
                 'loyalty_card_id' => $loyaltyCardId, 
                 'code' => $code,
