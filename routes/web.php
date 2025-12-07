@@ -124,6 +124,13 @@ Route::prefix('customer')->name('customer.')->group(function () {
 Route::name('staff.')->prefix('staff')->group(function () {
     Route::middleware('auth:staff')->group(function () {
         Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/generate-offline', [DashboardController::class, 'generateOfflineStamps'])->name('generate-offline');
+        Route::post('/perk-claims/{perkClaim}/redeem', [DashboardController::class, 'markAsRedeemed'])->name('perk-claims.redeem');
+        Route::post('/perk-claims/{perkClaim}/undo', [DashboardController::class, 'undoRedeem'])->name('perk-claims.undo');
+
+           Route::post('/logout', [StaffAuthController::class, 'logout'])
+            ->name('logout');
     });
 
     Route::middleware('guest:staff')->group(function () {
