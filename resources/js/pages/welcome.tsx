@@ -307,8 +307,8 @@ export default function Welcome() {
                               <span className='text-[10px] sm:text-xs'>Print QR code, start today</span>
                         </p>
                         <p className="text-xs sm:text-base flex flex-col">
-                            <strong>✓ ₱99/month after trial</strong>
-                              <span className='text-[10px] sm:text-xs'>Less than ₱4 per day</span>
+                            <strong>✓ Less than ₱4 per day</strong>
+                              <span className='text-[10px] sm:text-xs'>₱99/month after trial</span>
                         </p>
                     </div>
                     <button 
@@ -872,65 +872,42 @@ export default function Welcome() {
     </div>
 </section>
 
-           {/* Footer */}
-<footer className="relative z-10 px-4 sm:px-6 py-6 bg-white border-t border-gray-200">
-    <div className="max-w-7xl mx-auto">
-        {/* Social Media Links */}
-        <div className="flex justify-center items-center gap-6 mb-4">
-            {/* Facebook */}
-            <a 
-                href="https://www.facebook.com/profile.php?id=61584319949414" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-blue-600 transition-colors"
-                aria-label="Facebook"
-            >
-                <Facebook className="w-6 h-6" />
-            </a>
+       {/* Footer - The approved dark footer */}
+                <footer className="px-4 sm:px-6 py-12 bg-primary">
+                    <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 text-white/70 text-sm">
+                        <div className="md:col-span-1">
+                            <img src={LOGO} alt="StampBayan Logo" className='h-8 mb-4'/>
+                            <p className='mb-4'>Digital Loyalty for Filipino Businesses.</p>
+                            <div className="flex gap-4">
+                                <Facebook className="w-5 h-5 hover:text-white transition cursor-pointer" />
+                                <Instagram className="w-5 h-5 hover:text-white transition cursor-pointer" />
+                            </div>
+                        </div>
 
-            {/* Instagram */}
-            <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-pink-600 transition-colors"
-                aria-label="Instagram"
-            >
-                <Instagram className="w-6 h-6" />
-            </a>
+                        <div className="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-6">
+                            <div>
+                                <h4 className="font-bold mb-3 text-white">Navigate</h4>
+                                <ul>
+                                    <li><a href="#benefits" onClick={(e) => scrollToSection(e, '#benefits')} className="hover:text-white">Benefits</a></li>
+                                    <li><a href="#features" onClick={(e) => scrollToSection(e, '#features')} className="hover:text-white">Features</a></li>
+                                    <li><a href="#pricing" onClick={(e) => scrollToSection(e, '#pricing')} className="hover:text-white">Pricing</a></li>
+                                    <li><a href="#faq" onClick={(e) => scrollToSection(e, '#faq')} className="hover:text-white">FAQ</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 className="font-bold mb-3 text-white">Contact</h4>
+                                <p className='flex items-center gap-2 mb-2'><Mail className='w-4 h-4 text-white/50'/> stampbayan@gmail.com</p>
+                                <p className='flex items-center gap-2'><Phone className='w-4 h-4 text-white/50'/> +63 9266887267</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-12 pt-6 border-t border-white/10 text-center text-xs text-white/50">
+                        &copy; {new Date().getFullYear()} StampBayan. All rights reserved.
+                    </div>
+                </footer>
+            </div>
 
-            {/* TikTok - Using a custom SVG since Lucide doesn't have TikTok */}
-            <a 
-                href="https://www.tiktok.com/@stampbayan" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-black transition-colors"
-                aria-label="TikTok"
-            >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-                </svg>
-            </a>
-
-            {/* Email */}
-            <a 
-                href="mailto:stampbayan@gmail.com" 
-                className="text-gray-600 hover:text-orange-600 transition-colors"
-                aria-label="Email"
-            >
-                <Mail className="w-6 h-6" />
-            </a>
-        </div>
-
-        {/* Copyright */}
-        <div className="text-center">
-            <p className="text-gray-600 text-sm">
-                © {new Date().getFullYear()} Stamp Bayan. All rights reserved.
-            </p>
-        </div>
-    </div>
-</footer>
-        </div>   
+      
         </>      
     );
 }
