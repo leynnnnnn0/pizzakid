@@ -135,10 +135,10 @@ export default function Index({ staffs, filters }: Props) {
 
     return (
         <AppLayout>
-            <Head title="Staffs" />
+            <Head title="Staff" />
             <ModuleHeading
-                title="Staffs"
-                description="Manage the staffs of your business"
+                title="Staff"
+                description="Manage the staff accounts of your business"
             >
                 <Button onClick={openCreateDialog}>
                     <Plus />

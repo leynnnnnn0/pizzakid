@@ -23,7 +23,7 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
      {
-        title: 'Staffs',
+        title: 'Staff Accounts',
         href: '/business/staffs',
         icon: StoreIcon,
     },
