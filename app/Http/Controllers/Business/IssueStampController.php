@@ -90,22 +90,25 @@ class IssueStampController extends Controller
     }
 
 
-   
-   public function generateOfflineStamps(Request $request)
+
+    public function generateOfflineStamps(Request $request)
     {
         $loyaltyCardId = $request->input('id');
         $registrationLink = "https://stampbayan.com/customer/register?business=" . Auth::user()->business->qr_token;
         $businessId = Auth::user()->business->id;
 
+        // Fetch the loyalty card details
+        $loyaltyCard = \App\Models\LoyaltyCard::findOrFail($loyaltyCardId);
+
         // Generate 8 unique codes and save to database
         $tickets = [];
         $stampCodesToInsert = [];
-        
+
         for ($i = 0; $i < 8; $i++) {
             do {
                 $code = strtoupper(Str::random(8));
             } while (
-                StampCode::where('code', $code)->exists() || 
+                StampCode::where('code', $code)->exists() ||
                 in_array($code, array_column($tickets, 'code'))
             );
 
@@ -113,7 +116,7 @@ class IssueStampController extends Controller
             $stampCodesToInsert[] = [
                 'user_id' => Auth::id(),
                 'business_id' => $businessId,
-                'loyalty_card_id' => $loyaltyCardId, 
+                'loyalty_card_id' => $loyaltyCardId,
                 'code' => $code,
                 'is_offline_code' => true,
                 'created_at' => now(),
@@ -139,7 +142,8 @@ class IssueStampController extends Controller
         $html = view('pdf.offline-stamps', [
             'tickets' => $tickets,
             'registrationLink' => $registrationLink,
-            'businessName' => $businessName
+            'businessName' => $businessName,
+            'loyaltyCard' => $loyaltyCard
         ])->render();
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadHTML($html);

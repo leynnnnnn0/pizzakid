@@ -392,7 +392,6 @@ useEffect(() => {
         setRecordDialogOpen(false);
       },
       onError: (errors) => {
-        console.log(errors);
         if (errors.code) {
           toast.error(errors.code);
         } else {
