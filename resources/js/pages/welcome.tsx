@@ -142,7 +142,7 @@ export default function Welcome() {
           <Head>
     <title>StampBayan - Free Digital Loyalty Card System for Philippine Businesses</title>
     <meta name="title" content="StampBayan - Free Digital Loyalty Card System" />
-    <meta name="description" content="StampBayan is a FREE digital loyalty card system for Philippine businesses. Replace paper punch cards with QR code scanning. Track customer analytics, boost repeat sales, and build lasting relationships. No setup fees, unlimited customers. Start in 5 minutes." />
+    <meta name="description" content="FREE digital loyalty card system for Philippine businesses. Replace punch cards with QR scanning. No fees, unlimited customers. Start in 5 minutes." />
     <meta name="keywords" content="free loyalty program Philippines, customer loyalty card, digital stamp card, Filipino business tools" />
     <link rel="canonical" href="https://www.stampbayan.com" />
     <meta property="og:type" content="website" />
