@@ -146,7 +146,7 @@ export default function Welcome() {
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    
+
     <title>StampBayan - Free Digital Loyalty Card System for Philippine Businesses</title>
     <meta name="title" content="StampBayan - Free Digital Loyalty Card System" />
     <meta name="description" content="FREE digital loyalty card system for Philippine businesses. Replace punch cards with QR scanning. No fees, unlimited customers. Start in 5 minutes." />
@@ -579,16 +579,19 @@ export default function Welcome() {
                             </div>
 
                             {/* CTA Button */}
-                            <div className="pt-6 lg:pt-8">
-                                <a 
+                       
+                              <div className="mt-6 w-full bg-primary flex items-center justify-center sm:w-auto font-semibold py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg cursor-pointer">
+
+                                  <a 
                                     href='/documentation'
                                     target='_blank'
-                                    className="sm:w-auto font-semibold px-8 sm:px-12 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg cursor-pointer w-full"
+                                    className=""
                                     style={{ backgroundColor: '#F4B942', color: '#ffffff' }}
                                 >
                                     Full guide
                                 </a>
-                            </div>
+                              </div>
+                            
                         </div>
                     </div>
                 </div>
