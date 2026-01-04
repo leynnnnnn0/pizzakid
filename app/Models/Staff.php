@@ -24,7 +24,6 @@ class Staff extends Model implements AuthenticatableContract, AuthorizableContra
         'remarks',
         'is_active'
     ];
-
      protected $hidden = [
         'password',
         'remember_token',
