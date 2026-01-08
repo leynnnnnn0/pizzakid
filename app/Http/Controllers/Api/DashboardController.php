@@ -75,7 +75,7 @@ class DashboardController extends Controller
     public function getBusiness($id)
     {
         try {
-            $business = Business::with('customers','user','staffs')->findOrFail($id);
+            $business = Business::with('customers.stamp_codes','user','staffs')->findOrFail($id);
 
             return response()->json([
                 'success' => true,
@@ -90,6 +90,7 @@ class DashboardController extends Controller
                             'name' => $customer->username,
                             'email' => $customer->email,
                             'phone' => $customer->phone,
+                            'stamp_codes' => $customer->stamp_codes->count(),
                             'created_at' => $customer->created_at,
                         ];
                     }),
