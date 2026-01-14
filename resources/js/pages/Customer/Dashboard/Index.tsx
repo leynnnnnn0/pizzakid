@@ -212,10 +212,6 @@ const handleUpdatePassword = (e: React.FormEvent) => {
     setMethodDialogOpen(true);
   };
 
-  function rootOrigin() {
-      const { protocol, hostname } = window.location;
-      return `${protocol}//${hostname.split('.').slice(-2).join('.')}`;
-  }
 
 
   const handleManualEntry = () => {
@@ -224,20 +220,16 @@ const handleUpdatePassword = (e: React.FormEvent) => {
     setData('loyalty_card_id', currentCard?.id);
   };
 
-  const getCleanUrl = (originalUrl : string) => {
-      try {
-          const urlObj = new URL(originalUrl);
-          const hostParts = urlObj.hostname.split('.');
+ const getMainDomain = () => {
+     const hostParts = window.location.hostname.split('.');
+     if (hostParts.length <= 2) return window.location.origin;
 
-          // Get the last two parts (e.g., 'stampbayan.com')
-          const baseDomain = hostParts.slice(-2).join('.');
+     // Takes 'stampbayan.com' and adds the protocol (https://)
+     const mainHost = hostParts.slice(-2).join('.');
+     return `${window.location.protocol}//${mainHost}`;
+ };
 
-          // Reconstruct: Protocol + Base Domain + Pathname
-          return `${urlObj.protocol}//${baseDomain}${urlObj.pathname}`;
-      } catch (e) {
-          return originalUrl;
-      }
-  };
+
 
 
 
@@ -547,7 +539,7 @@ useEffect(() => {
                 style={{
                     backgroundColor: cardTemplate.backgroundColor,
                     backgroundImage: backgroundImageUrl
-                        ? `url(${getCleanUrl(backgroundImageUrl)})`
+                        ? `${getMainDomain()}${backgroundImageUrl}`
                         : 'none',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
@@ -1152,7 +1144,7 @@ useEffect(() => {
                                           backgroundColor:
                                               currentCard.backgroundColor,
                                           backgroundImage: backgroundImageUrl
-                                              ? `url(${getCleanUrl(backgroundImageUrl)})`
+                                              ? `${getMainDomain()}${backgroundImageUrl}`
                                               : 'none',
                                           backgroundSize: 'cover',
                                           backgroundPosition: 'center',
