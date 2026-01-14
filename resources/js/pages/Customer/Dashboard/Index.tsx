@@ -661,6 +661,8 @@ useEffect(() => {
     );
   };
 
+  console.log(getMainDomain());
+
   const logoUrl = currentCard?.logo ? `/${currentCard.logo}` : null;
   const backgroundImageUrl = currentCard?.backgroundImage ? `/${currentCard.backgroundImage}` : null;
 
