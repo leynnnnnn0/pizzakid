@@ -529,6 +529,7 @@ useEffect(() => {
     const logoUrl = cardTemplate.logo ? `/${cardTemplate.logo}` : null;
     const backgroundImageUrl = cardTemplate.backgroundImage ? `/${cardTemplate.backgroundImage}` : null;
 
+
     return (
         <div
             className="cursor-pointer overflow-hidden rounded-lg shadow-2xl transition-shadow hover:shadow-xl"
@@ -661,10 +662,11 @@ useEffect(() => {
     );
   };
 
-  console.log(getMainDomain());
+
 
   const logoUrl = currentCard?.logo ? `/${currentCard.logo}` : null;
   const backgroundImageUrl = currentCard?.backgroundImage ? `/${currentCard.backgroundImage}` : null;
+  console.log(getMainDomain() + backgroundImageUrl);
 
   if (!cardTemplates || cardTemplates.length === 0) {
     return (
@@ -1146,7 +1148,9 @@ useEffect(() => {
                                           backgroundColor:
                                               currentCard.backgroundColor,
                                           backgroundImage: backgroundImageUrl
-                                              ? `${getMainDomain()}${backgroundImageUrl}`
+                                              ? getMainDomain() +
+                                                '/' +
+                                                backgroundImageUrl
                                               : 'none',
                                           backgroundSize: 'cover',
                                           backgroundPosition: 'center',
