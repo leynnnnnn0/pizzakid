@@ -103,12 +103,12 @@
     --sidebar-ring: oklch(0.87 0 0);
 
   /* StampBayan Semantic Color */
-    --primary: #000;      /* Blue */
-    --secondary: #E85D75;    /* Red */
-    --accent: #717171;       /* Yellow */
-    --surface: #FFF8F0;      /* Cream */
-    --neutral: #F5F5F5;      /* Gray */
-    --text: #333333;         /* Charcoal */
+  --primary: #E11D48;      /* Vibrant Red (Ketchup) */
+    --secondary: #FACC15;    /* Bright Yellow (Mustard/Fries) */
+    --accent: #1D4ED8;       /* Royal Blue (The "Uncle Sam" Americana touch) */
+    --surface: #FFFDF5;      /* Warm Vanilla/Cream (Diner Paper/Milkshake) */
+    --neutral: #FDE68A;      /* Light Gold (Toasted Buns) */
+    --text: #171717;         /* Deep Charcoal */
 }
 
 

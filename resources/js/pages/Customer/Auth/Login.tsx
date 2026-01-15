@@ -50,7 +50,7 @@ export default function Login({ business, status, isDemo }: LoginProps) {
                                     <img
                                         src={LOGO}
                                         alt="business logo"
-                                        className="h-12 w-32"
+                                        className="h-24 w-auto"
                                     />
                                 </a>
                             )}
