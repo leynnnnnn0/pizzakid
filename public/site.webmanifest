@@ -1,6 +1,6 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "Uncle Sam's Diner Loyalty Program",
+  "short_name": "Unlce Sam's",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",

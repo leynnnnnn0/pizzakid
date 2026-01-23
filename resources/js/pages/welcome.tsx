@@ -1,11 +1,7 @@
 import { Head, router } from '@inertiajs/react';
-import first from '../../../public/images/1.jpg';
-import third from '../../../public/images/3.jpg';
-import fourth from '../../../public/images/4.jpg';
-import fifth from '../../../public/images/5.jpg';
-import sixth from '../../../public/images/6.jpg';
-import seventh from '../../../public/images/7.jpg';
-import eight from '../../../public/images/8.jpg';
+import { Download } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import BurgerArt from '../../../public/images/homeImage.png';
 import MainLogo from '../../../public/images/mainLogo.png';
 import menu1 from '../../../public/images/menu1.jpg';
@@ -23,10 +19,82 @@ import {
 } from '@/components/ui/carousel';
 
 export default function Welcome() {
+    const [platform, setPlatform] = useState<'ios' | 'android' | 'other'>(
+        'other',
+    );
+    const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+    useEffect(() => {
+        const userAgent = navigator.userAgent || navigator.vendor;
+
+        // Detect iOS devices
+        if (/iPad|iPhone|iPod/.test(userAgent)) {
+            setPlatform('ios');
+        }
+        // Detect Android devices
+        else if (/android/i.test(userAgent)) {
+            setPlatform('android');
+        }
+        // Other platforms
+        else {
+            setPlatform('other');
+        }
+
+        // Listen for PWA install prompt (for Android/Chrome)
+        const handleBeforeInstallPrompt = (e: Event) => {
+            e.preventDefault();
+            setDeferredPrompt(e);
+        };
+
+        window.addEventListener(
+            'beforeinstallprompt',
+            handleBeforeInstallPrompt,
+        );
+
+        return () => {
+            window.removeEventListener(
+                'beforeinstallprompt',
+                handleBeforeInstallPrompt,
+            );
+        };
+    }, []);
+
+    const handleDownload = async () => {
+        if (platform === 'ios') {
+            // For iOS - show instructions to add to home screen
+            toast.info(
+                'To install: Tap the Share button (□↑), then "Add to Home Screen"',
+                { duration: 6000 },
+            );
+        } else if (platform === 'android' && deferredPrompt) {
+            // For Android - trigger PWA install prompt
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+
+            if (outcome === 'accepted') {
+                toast.success('App installed successfully!');
+            }
+            setDeferredPrompt(null);
+        } else if (platform === 'android' && !deferredPrompt) {
+            // Android but PWA already installed or not available
+            toast.info(
+                'App is already installed or available through your browser menu',
+                { duration: 4000 },
+            );
+        } else {
+            // Desktop or other platforms
+            toast.info(
+                'Use Chrome or Edge on your mobile device to install this app',
+                { duration: 4000 },
+            );
+        }
+    };
+
     return (
         <>
             <Head>
                 <link rel="icon" href="/favicon.ico" sizes="any" />
+                <link rel="manifest" href="/site.webmanifest" />
                 <title>Uncle Sam's Diner | Burgers, Drinks & Fries</title>
                 <meta
                     name="description"
@@ -34,7 +102,6 @@ export default function Welcome() {
                 />
             </Head>
 
-            {/* Changed background to a warm diner cream */}
             <div className="min-h-screen bg-[#FFFDF5] font-sans text-neutral-900 selection:bg-red-600 selection:text-white">
                 {/* Navigation - Bold Red Accents */}
                 <nav className="sticky top-0 z-50 flex items-center justify-between border-b border-yellow-200 bg-white/95 p-6 backdrop-blur-md lg:px-20">
@@ -44,6 +111,7 @@ export default function Welcome() {
                         className="h-10 w-auto"
                     />
                     <div className="flex gap-4 text-xs font-black tracking-widest uppercase md:gap-8">
+                      
                         <button
                             onClick={() => router.get('/customer/login')}
                             className="cursor-pointer rounded-full border-2 border-red-600 bg-red-600 px-6 py-2 text-white transition-all hover:border-red-700 hover:bg-red-700"
@@ -67,12 +135,21 @@ export default function Welcome() {
                             golden fries. Feed your hunger and earn rewards with
                             every bite.
                         </p>
-                        <button
-                            onClick={() => router.get('/customer/login')}
-                            className="cursor-pointer rounded-full bg-blue-700 px-12 py-4 text-xl font-black text-white shadow-xl shadow-blue-700/30 transition-all hover:bg-yellow-400 hover:text-blue-900 hover:shadow-yellow-400/40 active:scale-95"
-                        >
-                            Get Started
-                        </button>
+                        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
+                            <button
+                                onClick={() => router.get('/customer/login')}
+                                className="cursor-pointer rounded-full bg-blue-700 px-12 py-4 text-xl font-black text-white shadow-xl shadow-blue-700/30 transition-all hover:bg-yellow-400 hover:text-blue-900 hover:shadow-yellow-400/40 active:scale-95"
+                            >
+                                Get Started
+                            </button>
+                            <button
+                                onClick={handleDownload}
+                                className="flex cursor-pointer items-center justify-center gap-3 rounded-full border-4 border-red-600 bg-white px-12 py-4 text-xl font-black text-red-600 shadow-xl shadow-red-600/20 transition-all hover:bg-red-600 hover:text-white active:scale-95"
+                            >
+                                <Download className="h-6 w-6" />
+                                Install App
+                            </button>
+                        </div>
                     </div>
 
                     <div className="relative flex flex-1 items-center justify-center">
@@ -183,7 +260,6 @@ export default function Welcome() {
                         </div>
                     </div>
                 </section>
-
 
                 <footer className="border-t-4 border-yellow-400 bg-neutral-900 py-12 text-center text-white">
                     <p className="text-[12px] font-black tracking-[0.4em] text-yellow-400 uppercase">
