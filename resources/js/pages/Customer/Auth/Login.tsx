@@ -35,7 +35,7 @@ export default function Login({ business, status, isDemo }: LoginProps) {
         <>
             <Head title="Customer Login" />
 
-            <div className="flex min-h-screen items-center justify-center p-4">
+            <div className="flex min-h-screen items-center justify-center p-4 bg-white">
                 <Card className="w-full max-w-md shadow-xl">
                     <CardHeader className="space-y-3">
                         <div className="mb-2 flex items-center justify-center">
@@ -156,7 +156,7 @@ export default function Login({ business, status, isDemo }: LoginProps) {
                         <CardFooter className="mt-5 flex flex-col space-y-4">
                             <Button
                                 type="submit"
-                                className="h-11 w-full bg-accent text-base hover:bg-accent/70"
+                                className="h-11 w-full bg-background text-base hover:bg-accent/70"
                                 disabled={processing}
                             >
                                 {processing ? 'Signing in...' : 'Sign In'}

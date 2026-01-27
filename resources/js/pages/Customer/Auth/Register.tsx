@@ -62,7 +62,7 @@ export default function Register({
         <>
             <Head title="Customer Registration" />
 
-            <div className="flex min-h-screen items-center justify-center p-4">
+            <div className="bg-white flex min-h-screen items-center justify-center p-4">
                 <Card className="w-full max-w-md shadow-xl">
                     <CardHeader className="space-y-3">
                         <div className="mb-2 flex items-center justify-center">
