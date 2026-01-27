@@ -162,8 +162,7 @@ export default function Welcome() {
                                 <div className="mt-4 h-2 w-24 bg-yellow-500" />
                             </div>
                             <p className="max-w-xs font-medium text-neutral-400">
-                                From classic Margherita to our bold Spicy
-                                Mustard Infusion.
+                                Handpicked favorites from our collection
                             </p>
                         </div>
 
