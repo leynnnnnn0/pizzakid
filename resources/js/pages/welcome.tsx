@@ -1,22 +1,16 @@
-import { Head, router } from '@inertiajs/react';
-import { Download, Heart, History, Target, Users } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
 } from '@/components/ui/carousel';
+import { Head, router } from '@inertiajs/react';
+import { Download, MapPin } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
-// Assuming you replace these paths with your pizza assets
-import story3 from '../../../public/images/culture.png';
+// Pizza assets
 import PizzaHero from '../../../public/images/culture.png';
-import story1 from '../../../public/images/history.png';
 import MainLogo from '../../../public/images/mainLogo.png';
-import story2 from '../../../public/images/values.png';
-import story4 from '../../../public/images/vision.png';
 import pizza1 from '../../../public/images/pizza1.png';
 import pizza2 from '../../../public/images/pizza2.png';
 import pizza3 from '../../../public/images/pizza3.png';
@@ -28,6 +22,14 @@ export default function Welcome() {
         'other',
     );
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+    const targetBranches = [
+        'Manolo Fortich',
+        'Malaybalay',
+        'Valencia',
+        'Jasaan',
+        'Iligan',
+    ];
 
     useEffect(() => {
         const userAgent = navigator.userAgent || navigator.vendor;
@@ -63,33 +65,6 @@ export default function Welcome() {
         }
     };
 
-    const storySections = [
-        {
-            title: 'Our History',
-            img: story1,
-            icon: <History className="h-5 w-5" />,
-            desc: 'Crafting dough since 2026.',
-        },
-        {
-            title: 'Our Values',
-            img: story2,
-            icon: <Heart className="h-5 w-5" />,
-            desc: 'Quality ingredients, always.',
-        },
-        {
-            title: 'Our Culture',
-            img: story3,
-            icon: <Users className="h-5 w-5" />,
-            desc: 'A community built on slices.',
-        },
-        {
-            title: 'Our Vision',
-            img: story4,
-            icon: <Target className="h-5 w-5" />,
-            desc: 'The perfect crust in every city.',
-        },
-    ];
-
     return (
         <>
             <Head>
@@ -98,7 +73,7 @@ export default function Welcome() {
             </Head>
 
             <div className="min-h-screen bg-black font-sans text-white selection:bg-yellow-500 selection:text-black">
-                {/* Navigation - Minimalist Black/White */}
+                {/* Navigation */}
                 <nav className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-black/90 p-6 backdrop-blur-md lg:px-20">
                     <img src={MainLogo} alt="Logo" className="h-10 w-auto" />
                     <button
@@ -109,7 +84,7 @@ export default function Welcome() {
                     </button>
                 </nav>
 
-                {/* Hero Section - High Contrast Mustard/Black */}
+                {/* Hero Section */}
                 <main className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-12 px-6 py-16 lg:flex-row lg:py-32">
                     <div className="flex-1 space-y-8 text-center lg:text-left">
                         <h1 className="font-serif text-7xl leading-none font-black tracking-tighter md:text-9xl">
@@ -120,8 +95,7 @@ export default function Welcome() {
                         </h1>
                         <p className="mx-auto max-w-md text-lg font-light text-neutral-400 lg:mx-0">
                             Join the elite circle of pizza lovers. Earn gold
-                            points on every slice and unlock wood-fired rewards
-                            that money can't buy.
+                            points on every slice and unlock wood-fired rewards.
                         </p>
                         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
                             <button
@@ -148,7 +122,36 @@ export default function Welcome() {
                     </div>
                 </main>
 
-                {/* Menu Section - Dark Gallery Style */}
+                {/* Availability Section - NEW */}
+                <section className="border-y border-white/10 bg-black px-6 py-20">
+                    <div className="mx-auto max-w-7xl text-center">
+                        <h2 className="mb-4 text-xs font-bold tracking-[0.3em] text-yellow-500 uppercase">
+                            Available Locations
+                        </h2>
+                        <h3 className="mb-12 font-serif text-4xl font-black md:text-6xl">
+                            WHERE TO <span className="italic">EARN</span>
+                        </h3>
+                        <div className="flex flex-wrap justify-center gap-4 md:gap-8">
+                            {targetBranches.map((branch) => (
+                                <div
+                                    key={branch}
+                                    className="flex items-center gap-3 rounded-full border border-white/20 px-6 py-3 transition-colors hover:border-yellow-500"
+                                >
+                                    <MapPin className="h-5 w-5 text-yellow-500" />
+                                    <span className="text-lg font-bold tracking-widest uppercase">
+                                        {branch}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                        <p className="mt-10 text-neutral-500 italic">
+                            Exclusive loyalty rewards currently available at
+                            these select branches only.
+                        </p>
+                    </div>
+                </section>
+
+                {/* Menu Section */}
                 <section className="bg-white px-6 py-24">
                     <div className="mx-auto max-w-7xl">
                         <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -161,18 +164,13 @@ export default function Welcome() {
                                 </h2>
                                 <div className="mt-4 h-2 w-24 bg-yellow-500" />
                             </div>
-                            <p className="max-w-xs font-medium text-neutral-400">
-                                Handpicked favorites from our collection
-                            </p>
                         </div>
-
                         <Carousel
                             opts={{ align: 'start', loop: true }}
                             className="w-full"
                         >
                             <CarouselContent className="-ml-2 md:-ml-4">
-                                {/* Assuming menu1-5 are your pizza images */}
-                                {[pizza1, , pizza2, pizza4, pizza3, pizza5].map(
+                                {[pizza1, pizza2, pizza4, pizza3, pizza5].map(
                                     (img, index) => (
                                         <CarouselItem
                                             key={index}
@@ -182,7 +180,7 @@ export default function Welcome() {
                                                 <div className="aspect-square overflow-hidden">
                                                     <img
                                                         src={img}
-                                                        alt={`Pizza Variety ${index + 1}`}
+                                                        alt="Pizza"
                                                         className="h-full w-full object-cover grayscale-[20%] transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0"
                                                     />
                                                 </div>
@@ -191,16 +189,11 @@ export default function Welcome() {
                                     ),
                                 )}
                             </CarouselContent>
-                            {/* Styled buttons to match the black/mustard theme */}
-                            <div className="hidden md:block">
-                                <CarouselPrevious className="left-[-50px] border-none bg-yellow-500 text-black hover:bg-white hover:text-black" />
-                                <CarouselNext className="right-[-50px] border-none bg-yellow-500 text-black hover:bg-white hover:text-black" />
-                            </div>
                         </Carousel>
                     </div>
                 </section>
 
-                {/* How It Works - Dark/Mustard Theme */}
+                {/* How It Works */}
                 <section className="bg-[#111] px-6 py-24">
                     <div className="mx-auto max-w-7xl">
                         <div className="mb-16">
@@ -215,18 +208,18 @@ export default function Welcome() {
                             {[
                                 {
                                     step: '01',
-                                    title: 'Scan QR',
-                                    desc: 'Find our standee at the counter and scan with your phone.',
+                                    title: 'Visit Us',
+                                    desc: 'Head to our branches in Manolo, Malaybalay, Valencia, Jasaan, or Iligan.',
                                 },
                                 {
                                     step: '02',
-                                    title: 'Register',
-                                    desc: 'Create your profile in seconds to start tracking progress.',
+                                    title: 'Scan QR',
+                                    desc: 'Find the unique QR code at the counter to register your purchase.',
                                 },
                                 {
                                     step: '03',
-                                    title: 'Earn Stamps',
-                                    desc: 'Collect stamps with every purchase and unlock free treats.',
+                                    title: 'Unlock Gold',
+                                    desc: 'Collect digital stamps and trade them for free artisan pizzas.',
                                 },
                             ].map((item, i) => (
                                 <div
